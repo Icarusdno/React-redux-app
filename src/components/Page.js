@@ -7,8 +7,29 @@ export class Page extends React.Component {
     this.props.getPhotos(year)
   }
 
+  renderTemplate = () => {
+    const { photos, isFetching, error } = this.props
+
+    if (error) {
+      return <p className="error">Ошибка, печалька</p>
+    }
+
+    if (isFetching) {
+      return <p>Загрузка...</p>
+    } else {
+      return photos.map(photo => (
+        <div key={photo.id} className="photo">
+          <p>
+            <img src={photo.sizes[0].url} alt="" />
+          </p>
+          <p>{photo.likes.count} ❤</p>
+        </div>
+      ))
+    }
+  }
+
   render() {
-    const { photos, year, isFetching } = this.props
+    const { photos, year } = this.props
 
     return (
       <div className="ib page">
@@ -29,8 +50,10 @@ export class Page extends React.Component {
             2014
           </button>
         </p>
-        <h3>{year} год</h3>
-        {isFetching ? <p>Загрузка...</p> : <p>У тебя {photos.length} фото.</p>}
+        <h3>
+          {year} год [{photos.length}]
+        </h3>
+        {this.renderTemplate()}
       </div>
     )
   }
@@ -40,5 +63,6 @@ Page.proptypes = {
   year: PropTypes.number.isRequired,
   phones: PropTypes.array.isRequired,
   getPhotos: PropTypes.func.isRequired,
+  error: PropTypes.func.isRequired,
   isFetching: PropTypes.bool.isRequired,
 }

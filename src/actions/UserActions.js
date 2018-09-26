@@ -9,15 +9,16 @@ export function handleLogin() {
     })
 
     //eslint-disable-next-line no-undef
-    VK.Auth.login()
-    //eslint-disable-next-line no-undef
     VK.Auth.login(r => {
       if (r.session) {
-        let username = r.session.user.first_name
+        let temp = {
+          id: r.session.user.id,
+          name: r.session.user.first_name,
+        }
 
         dispatch({
           type: LOGIN_SUCCESS,
-          payload: username,
+          payload: temp,
         })
       } else {
         dispatch({

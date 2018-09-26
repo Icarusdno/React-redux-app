@@ -16,10 +16,18 @@ export function userReducer(state = initialState, action) {
       return { ...state, isFetching: true, error: '' }
 
     case LOGIN_SUCCESS:
-      return { ...state, isFetching: false, name: action.payload }
+      return {
+        ...state,
+        isFetching: false,
+        name: action.payload.name,
+      }
 
     case LOGIN_FAIL:
-      return { ...state, isFetching: false, error: action.payload.message }
+      return {
+        ...state,
+        isFetching: false,
+        error: action.payload.message,
+      }
 
     default:
       return state
